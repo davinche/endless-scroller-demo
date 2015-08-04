@@ -1,10 +1,12 @@
 window.onload = function() {
     var scroller = document.getElementById('scroller'),
         content = document.querySelector('.content'),
+        c = content.cloneNode(true),
         clone = content.cloneNode(true);
 
     // Dupe the content we want to infintely scroll so we have a target to scroll to
-    scroller.insertBefore(clone, content.nextSibling);
+    scroller.insertBefore(c, content.nextSibling);
+    scroller.insertBefore(clone, c.nextSibling);
 
     var leftScroll = document.getElementById('left-scroll'),
         rightScroll = document.getElementById('right-scroll'),
@@ -91,29 +93,56 @@ window.onload = function() {
     // scrollbar back to "content's width"
     // -----------------------------------------------------------------
 
-    var scrollHandler = function() {
-        var scrollWidth = content.scrollWidth;
-        if (scrollingRight) {
-            if (scroller.scrollLeft >= scrollWidth) {
-                stopAnimation();
-                scroller.scrollLeft = 0;
-                animateRight();
-            }
-        }
+    var scrollHandler = (function() {
+        var prevScrollPosition = null;
 
-        if (scrollingLeft) {
-            if (scroller.scrollLeft === 0) {
-                stopAnimation();
-                scroller.scrollLeft = scrollWidth;
-                animateLeft();
+        var checkScrollRight = function() {
+            var scrollWidth = content.scrollWidth;
+            if (scroller.scrollLeft >= scrollWidth) {
+                scroller.scrollLeft = 0;
+                prevScrollPosition = 0;
+                if (scrollingRight) {
+                    stopAnimation();
+                    animateRight();
+                }
             }
-        }
-    };
+        };
+
+        var checkScrollLeft = function() {
+            if (scroller.scrollLeft === 0) {
+                scroller.scrollLeft = content.scrollWidth;
+                prevScrollPosition = content.scrollWidth;
+                if (scrollingLeft) {
+                    stopAnimation();
+                    animateLeft();
+                }
+            }
+        };
+
+        return function (event) {
+            var scrollWidth = content.scrollWidth;
+            if (scrollingRight) {
+                checkScrollRight(event);
+            }
+
+            else if (scrollingLeft) {
+                checkScrollLeft(event);
+            } else {
+                if (prevScrollPosition !== null) {
+                    if (scroller.scrollLeft <= prevScrollPosition) {
+                        checkScrollLeft(event);
+                    } else {
+                        checkScrollRight(event);
+                    }
+                }
+                prevScrollPosition = scroller.scrollLeft;
+            }
+        };
+    })();
 
     scroller.addEventListener('scroll', scrollHandler);
     rightScroll.addEventListener('mouseenter', rightScrollHandler);
     rightScroll.addEventListener('mouseleave', stopAnimation);
     leftScroll.addEventListener('mouseenter', leftScrollHandler);
     leftScroll.addEventListener('mouseleave', stopAnimation);
-
 };
