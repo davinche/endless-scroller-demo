@@ -102,7 +102,6 @@ window.onload = function() {
         }
 
         if (scrollingLeft) {
-            var scrollWidth = content.scrollWidth;
             if (scroller.scrollLeft === 0) {
                 stopAnimation();
                 scroller.scrollLeft = scrollWidth;
