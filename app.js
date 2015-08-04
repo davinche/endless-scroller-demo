@@ -14,7 +14,7 @@ window.onload = function() {
     // -----------------------------------------------------------------
     // Configuration for scroller speed
     // -----------------------------------------------------------------
-    var pixelsPerSecond = 600;
+    var pixelsPerSecond = Math.round(content.scrollWidth / 5);
 
     // -----------------------------------------------------------------
     // Animation Functions
