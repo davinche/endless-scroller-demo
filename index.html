@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Endless Scrolling</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #wrapper {
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+        }
+        #scroller {
+            height: 100%;
+            white-space: nowrap;
+            width: 100%;
+            overflow-y: hidden;
+            overflow-x: scroll;
+            position: relative;
+            -ms-overflow-style: none;
+            overflow: -moz-scrollbars-none;
+        }
+
+        #scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        #left-scroll, #right-scroll {
+            width: 80px;
+            height: 300px;
+            background-color: rgba(0, 0, 0, 0.25);
+            position: fixed;
+            text-align: center;
+            font-size: 45px;
+            color: #fff;
+            top: 0;
+            cursor: pointer;
+        }
+
+        #left-scroll {
+            left: 0;
+        }
+
+        #left-scroll:before {
+            content: '<';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -60%, 0);
+        }
+
+        #right-scroll {
+            right: 0;
+        }
+
+        #right-scroll:before {
+            content: '>';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -60%, 0);
+        }
+
+        .content {
+            display: inline-block;
+        }
+
+        .box {
+            width: 600px;
+            height: 300px;
+            line-height: 300px;
+            display: inline-block;
+            text-align: center;
+            font-size: 50px;
+            color: #fff;
+            text-shadow: 3px 3px 5px #999;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .one {
+            background-color: coral;
+        }
+        .two {
+            background-color: orange;
+        }
+        .three {
+            background-color: GoldenRod;
+        }
+        .four {
+            background-color: HoneyDew;
+        }
+        .five {
+            background-color: DeepSkyBlue;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="scroller">
+            <div class="content">
+                <div class="box one">
+                    One
+                </div><div class="box two">
+                    Two
+                </div><div class="box three">
+                    Three
+                </div><div class="box four">
+                    Four
+                </div><div class="box five">
+                    Five
+                </div>
+            </div>
+            <div id="left-scroll"></div>
+            <div id="right-scroll"></div>
+        </div>
+    </div>
+    <script src="velocity.js"></script>
+    <script src="./app.js"></script>
+</body>
+</html>
